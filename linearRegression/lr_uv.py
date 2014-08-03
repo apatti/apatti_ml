@@ -45,6 +45,7 @@ m = X.size
 intercept = np.ones([m,2])
 intercept[:,1]=X
 
+
 #initial theta value
 theta = np.zeros([2,1])
 #print computecost(intercept,Y,theta)
@@ -68,4 +69,19 @@ print theta
 
 predictiondata = intercept.dot(theta)
 pl.plot(data[:,0],predictiondata)
+pl.show()
+
+
+theta0 = np.linspace(-10,10,num=100)
+theta1 = np.linspace(-1,4,num=100)
+J = np.zeros([theta0.size,theta1.size])
+for t0,element0 in enumerate(theta0):
+    for t1,element1 in enumerate(theta1):
+        t=np.zeros([2,1])
+        t[0,0]=element0
+        t[1,0]=element1
+        J[t0,t1]=computecost(intercept,Y,t)
+
+pl.contour(theta0,theta1,J.T,np.logspace(-2,3,20))
+pl.scatter(theta[0][0],theta[1][0])
 pl.show()
