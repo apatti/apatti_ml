@@ -26,9 +26,38 @@ barplot(crimePerDayOfWeek,main="DayPerWeek",ylab = "Count",las=2,col=rainbow(nro
 trainData$dateOnly<-as.POSIXct(strptime(trainData$Dates,"%Y-%m-%d"))
 library(ggplot2)
 trainData$dateOnly<-format.Date(trainData$Dates,"%Y-%m-%d")
+trainData$Year<-substring(trainData$dateOnly,1,4)
+yearMonthData <-as.data.frame(table(format.Date(trainData$Dates,"%Y-%m"),dnn="YearMonth"))
+yearMonthData$Year<-substring(yearMonthData$YearMonth,1,4)
+yearMonthData$Month<-substring(yearMonthData$YearMonth,6,8)
 theme_set(theme_bw())
 ggplot(as.data.frame(table(format.Date(trainData$Dates,"%Y"),dnn="Year")),aes(x=Year,y=Freq))+geom_point()+ggtitle("Per Year")
 ggplot(as.data.frame(table(format.Date(trainData$Dates,"%m"),dnn="Month")),aes(x=Month,y=Freq))+geom_point()+ggtitle("Per Month")
 ggplot(as.data.frame(table(format.Date(trainData$Dates,"%d"),dnn="Date")),aes(x=Date,y=Freq))+geom_point()+ggtitle("Per Date")
-ggplot(as.data.frame(table(format.Date(trainData$Dates,"%Y-%m"),dnn="YearMonth")),aes(x=YearMonth,y=Freq))+geom_point()+ggtitle("Per Year Month")+theme(axis.text.x=element_text(angle=50,hjust=1,vjust=0.5))
+ggplot(yearMonthData,aes(x=Month,y=Freq,color=factor(Month),group=1))+geom_point()+geom_line()+ggtitle("Per Year Month")+theme(axis.text.x=element_text(angle=50,hjust=1,vjust=0.25),legend.title = element_text(colour="chocolate", face="bold"))+scale_color_discrete(name="Month")+facet_wrap(~Year,nrow=12,ncol=3)
 ggplot(as.data.frame(table(format.Date(trainData$Dates,"%Y-%m-%d"),dnn="Date")),aes(x=Date,y=Freq))+geom_point()+ggtitle("Per Full Date")
+ggplot(yearMonthData,aes(x=YearMonth,y=Freq,color=factor(Month)))+geom_point()+geom_line(aes(group=Month))+ggtitle("Per Year Month")+theme(axis.text.x=element_text(angle=50,hjust=1,vjust=0.5))
+library(sqldf)
+monthYearCategory<-sqldf("select Category,count(1) as count,substr(Dates,1,4) as year,substr(Dates,6,2) as month from trainData group by Category,substr(Dates,1,4),substr(Dates,6,2) order by substr(Dates,1,4),substr(Dates,6,2)")
+
+p<-ggplot(monthYearCategory[monthYearCategory$Category %in% levels(monthYearCategory$Category)[1:6],],aes(month,count))+geom_point(color="darkgoldenrod4")
+p+facet_grid(year ~ Category)
+
+p<-ggplot(monthYearCategory[monthYearCategory$Category %in% levels(monthYearCategory$Category)[7:12],],aes(month,count))+geom_point(color="darkgoldenrod4")
+p+facet_grid(year ~ Category)
+
+p<-ggplot(monthYearCategory[monthYearCategory$Category %in% levels(monthYearCategory$Category)[13:18],],aes(month,count))+geom_point(color="darkgoldenrod4")
+p+facet_grid(year ~ Category)
+
+p<-ggplot(monthYearCategory[monthYearCategory$Category %in% levels(monthYearCategory$Category)[19:24],],aes(month,count))+geom_point(color="darkgoldenrod4")
+p+facet_grid(year ~ Category)
+
+p<-ggplot(monthYearCategory[monthYearCategory$Category %in% levels(monthYearCategory$Category)[25:30],],aes(month,count))+geom_point(color="darkgoldenrod4")
+p+facet_grid(year ~ Category)
+
+p<-ggplot(monthYearCategory[monthYearCategory$Category %in% levels(monthYearCategory$Category)[31:36],],aes(month,count))+geom_point(color="darkgoldenrod4")
+p+facet_grid(year ~ Category)
+
+p<-ggplot(monthYearCategory[monthYearCategory$Category %in% levels(monthYearCategory$Category)[37:39],],aes(month,count))+geom_point(color="darkgoldenrod4")
+p+facet_grid(year ~ Category)
+
