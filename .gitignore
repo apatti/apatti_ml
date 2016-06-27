@@ -37,3 +37,4 @@ nosetests.xml
 
 *.tsv
 *.csv
+.Rproj.user
