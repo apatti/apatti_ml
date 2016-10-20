@@ -4,12 +4,12 @@ import re
 import csv
 import os.path
 
-if not os.path.isfile("imdb_indian.csv"):
-    imdb_indian_file = open("imdb_indian.csv","ab+")
+if not os.path.isfile("imdb_indian_ta.csv"):
+    imdb_indian_file = open("imdb_indian_ta.csv","ab+")
     writer = csv.writer(imdb_indian_file)
     writer.writerow(["id","name","duration","genre","titleYear","releaseDate","director","language","budget","cast","link"])
 else:
-    imdb_indian_file = open("imdb_indian.csv","ab+")
+    imdb_indian_file = open("imdb_indian_ta.csv","ab+")
     writer = csv.writer(imdb_indian_file)
 
 imdb_indian_file.flush()
@@ -62,7 +62,8 @@ def cleanValue(value):
     return re.sub('\n','',value).strip()
 
 def getMoviesPage():
-    pageUrl = 'http://www.imdb.com/search/title?countries=in&countries=IN&title_type=feature&explore=countries&sort=alpha,asc&view=advanced&page=1'
+    #pageUrl = 'http://www.imdb.com/search/title?countries=in&countries=IN&title_type=feature&explore=countries&sort=alpha,asc&view=advanced&page=201'
+    pageUrl = 'http://www.imdb.com/search/title?title_type=feature&languages=ta&sort=alpha,asc&page=1&ref_=adv_nxt'
     id = 1
     pageId=1
     while True:
