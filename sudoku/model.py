@@ -8,9 +8,19 @@ class sModel:
     def __init__(self):
         self.__table = np.zeros(shape=(3, 3, 3, 3), dtype=int)
         self.__tofill = range(0, 81)
+        self.__possiblenumbers={}
 
     def display(self):
-        print self.__table
+        #print self.__table
+        print self.__table[0,0,0,:],self.__table[0,1,0,:],self.__table[0,2,0,:] 
+        print self.__table[0,0,1,:],self.__table[0,1,1,:],self.__table[0,2,1,:]
+        print self.__table[0,0,2,:],self.__table[0,1,2,:],self.__table[0,2,2,:]
+        print self.__table[1,0,0,:],self.__table[1,1,0,:],self.__table[1,2,0,:]
+        print self.__table[1,0,1,:],self.__table[1,1,1,:],self.__table[1,2,1,:]
+        print self.__table[1,0,2,:],self.__table[1,1,2,:],self.__table[1,2,2,:]
+        print self.__table[2,0,0,:],self.__table[2,1,0,:],self.__table[2,2,0,:]
+        print self.__table[2,0,1,:],self.__table[2,1,1,:],self.__table[2,2,1,:]
+        print self.__table[2,0,2,:],self.__table[2,1,2,:],self.__table[2,2,2,:]
 
     def writerow(self, row, numbers):
         colindex=0
@@ -93,9 +103,17 @@ class sModel:
     def __solvesimple(self):
         # take each zero number box in row and check what all can fit.
         for position in self.__tofill:
-            print position,self.getpossiblenumbers(position)
+            possiblenumbers = self.getpossiblenumbers(position)
+            if len(possiblenumbers)==1:
+                self.__table[position/27,position%3,position%3,position%3]=possiblenumbers[0]
+                self.__tofill.remove(position)
+                print position,"Filled!!"
+            else:
+                self.__possiblenumbers[position]=self.getpossiblenumbers(position)
         pass
 
+    def __solveblock(self):
+        pass
 
     def solve(self):
         self.__solvesimple()
